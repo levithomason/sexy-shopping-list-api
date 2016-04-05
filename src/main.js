@@ -55,6 +55,15 @@ app
     }
   })
 
+  .post('/items', (req, res) => {
+    items.push(req.body)
+    fs.writeFileSync(
+      'storage/items.json',
+      JSON.stringify(items, null, 2)
+    )
+    res.json(req.body)
+  })
+
 app.listen(PORT, () => {
   console.log(`Listening http:/localhost:${PORT}`)
 })
