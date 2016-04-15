@@ -1,4 +1,3 @@
-import fs from 'fs'
 import express from 'express'
 import bodyParser from 'body-parser'
 
@@ -7,31 +6,21 @@ import * as storage from './storage'
 const PORT = process.env.PORT || 3000
 const app = express()
 
-// ----------------------------------------
-// Data Store
-// ----------------------------------------
-
-const categories = storage.list('categories')
-const items = storage.list('items')
-
-// ----------------------------------------
-// Server
-// ----------------------------------------
-
 app
   .use(bodyParser.json())
 
   .get('/categories', (req, res) => {
+    const categories = storage.list('categories')
     res.json(categories)
   })
 
   .post('/categories', (req, res) => {
-    categories.push(req.body)
-    fs.writeFileSync('storage/categories.json', JSON.stringify(categories, null, 2))
-    res.json(req.body)
+    const saved = storage.save('categories', req.body)
+    res.json(saved)
   })
 
   .get('/categories/:id', (req, res) => {
+    const categories = storage.list('categories')
     const category = categories.find((cat) => req.params.id == cat.id)
 
     if (category) {
@@ -42,10 +31,12 @@ app
   })
 
   .get('/items', (req, res) => {
+    const items = storage.list('items')
     res.json(items)
   })
 
   .get('/items/:id', (req, res) => {
+    const items = storage.list('items')
     const item = items.find((item) => req.params.id == item.id)
 
     if (item) {
@@ -56,12 +47,8 @@ app
   })
 
   .post('/items', (req, res) => {
-    items.push(req.body)
-    fs.writeFileSync(
-      'storage/items.json',
-      JSON.stringify(items, null, 2)
-    )
-    res.json(req.body)
+    const saved = storage.save('items', req.body)
+    res.json(saved)
   })
 
 app.listen(PORT, () => {
