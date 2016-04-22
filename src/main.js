@@ -15,7 +15,7 @@ app
   })
 
   .post('/categories', (req, res) => {
-    const saved = storage.save('categories', req.body)
+    const saved = storage.add('categories', req.body)
     res.json(saved)
   })
 
@@ -28,6 +28,11 @@ app
     } else {
       res.status(404).send('Category not found')
     }
+  })
+
+  .delete('/categories/:id', (req, res) => {
+    storage.remove('categories', req.params.id)
+    res.send(`Successfully removed category id: ${req.params.id}`)
   })
 
   .get('/items', (req, res) => {
@@ -47,8 +52,13 @@ app
   })
 
   .post('/items', (req, res) => {
-    const saved = storage.save('items', req.body)
+    const saved = storage.add('items', req.body)
     res.json(saved)
+  })
+
+  .delete('/items/:id', (req, res) => {
+    storage.remove('items', req.params.id)
+    res.send(`Successfully removed item id: ${req.params.id}`)
   })
 
 app.listen(PORT, () => {
