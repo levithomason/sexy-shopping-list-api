@@ -31,8 +31,13 @@ app
   })
 
   .delete('/categories/:id', (req, res) => {
-    storage.remove('categories', req.params.id)
-    res.send(`Successfully removed category id: ${req.params.id}`)
+    const wasFound = storage.remove('categories', req.params.id)
+
+    const message = wasFound
+      ? `Successfully removed category id: ${req.params.id}`
+      : `Did not find category id: ${req.params.id}`
+
+    res.status(404).send(message)
   })
 
   .get('/items', (req, res) => {
@@ -57,8 +62,13 @@ app
   })
 
   .delete('/items/:id', (req, res) => {
-    storage.remove('items', req.params.id)
-    res.send(`Successfully removed item id: ${req.params.id}`)
+    const wasFound = storage.remove('items', req.params.id)
+
+    const message = wasFound
+      ? `Successfully removed item id: ${req.params.id}`
+      : `Did not find item id: ${req.params.id}`
+
+    res.status(404).send(message)
   })
 
 app.listen(PORT, () => {
