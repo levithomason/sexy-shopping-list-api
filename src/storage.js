@@ -8,9 +8,13 @@ import fs from 'fs'
  * @param {string} collection The string name of the collection.
  */
 export const list = (collection) => {
-  const string = fs.readFileSync(`storage/${collection}.json`, 'utf8')
+  try {
+    const result = fs.readFileSync(`storage/${collection}.json`, 'utf8')
 
-  return JSON.parse(string)
+    return JSON.parse(result)
+  } catch (e) {
+    return null
+  }
 }
 
 /**
@@ -48,7 +52,7 @@ const save = (collection, arr) => {
  */
 export const remove = (collection, id) => {
   const arr = list(collection)
-  const index = arr.findIndex((object) => object.id === id)
+  const index = arr.findIndex((object) => object.id == id)
   const wasFound = index !== -1
 
   if (wasFound) {

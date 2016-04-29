@@ -9,9 +9,14 @@ const app = express()
 app
   .use(bodyParser.json())
 
-  .get('/categories', (req, res) => {
-    const categories = storage.list('categories')
-    res.json(categories)
+  .get('/:collection', (req, res) => {
+    const objects = storage.list(req.params.collection)
+
+    if (objects) {
+      res.json(objects)
+    } else {
+      res.status(404).send(`Could not find collection: ${req.params.collection}`)
+    }
   })
 
   .post('/categories', (req, res) => {
@@ -40,11 +45,6 @@ app
     res.status(404).send(message)
   })
 
-  .get('/items', (req, res) => {
-    const items = storage.list('items')
-    res.json(items)
-  })
-
   .get('/items/:id', (req, res) => {
     const items = storage.list('items')
     const item = items.find((item) => req.params.id == item.id)
@@ -64,11 +64,11 @@ app
   .delete('/items/:id', (req, res) => {
     const wasFound = storage.remove('items', req.params.id)
 
-    const message = wasFound
-      ? `Successfully removed item id: ${req.params.id}`
-      : `Did not find item id: ${req.params.id}`
-
-    res.status(404).send(message)
+    if (wasFound) {
+      res.send(`Successfully removed item id: ${req.params.id}`)
+    } else {
+      res.status(404).send(`Did not find item id: ${req.params.id}`)
+    }
   })
 
 app.listen(PORT, () => {
