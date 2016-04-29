@@ -62,3 +62,14 @@ export const remove = (collection, id) => {
 
   return wasFound
 }
+
+/**
+ * Find a single object by id in a collection.
+ * @param {string} collection The string name of the collection.
+ * @param {string|number} id The id of the object to find.
+ * @returns {object|undefined} Found object or undefined if not found.
+ */
+export const find = (collection, id) => {
+  const arr = list(collection)
+  return arr.find((object) => object.id == id)
+}
