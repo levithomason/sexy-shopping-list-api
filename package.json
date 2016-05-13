@@ -11,6 +11,10 @@
     "start": "node dist/main.js"
   },
   "author": "",
+  "engines": {
+    "node": ">=6",
+    "npm": ">=3"
+  },
   "license": "ISC",
   "dependencies": {
     "babel-cli": "^6.6.5",
