@@ -56,7 +56,7 @@ export const remove = (collection, id) => {
   const wasFound = index !== -1
 
   if (wasFound) {
-    arr.splice(index)
+    arr.splice(index, 1)
     save(collection, arr)
   }
 
